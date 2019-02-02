@@ -1,0 +1,21 @@
+#background {
+    background-image: url(/A1/assets/movie.jpg);
+}
+
+.page {
+    background-color: none;
+}
+
+#schedule {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-collapse: collapse;
+}
+#schedule td {
+    border: 3px solid black;
+}
+
+.time {
+    font-variant: small-caps;
+    font-size: 18px;
+}

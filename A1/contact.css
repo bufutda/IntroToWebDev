@@ -1,0 +1,9 @@
+#background {
+    background-image: url(/A1/assets/hockey.jpg);
+}
+
+#logo {
+    width: 333px;
+    margin: auto;
+    display: block;
+}

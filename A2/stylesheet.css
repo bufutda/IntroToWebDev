@@ -1,0 +1,21 @@
+/*
+ * SENG513 Assignment 2
+ * Mitchell Sawatzky
+ * Feb 15 2019
+ * 10146721
+ */
+
+html, body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+@media handheld, only screen and (max-width: 600px) {
+    /* calculator is stretched horizontally across entire screen */
+}

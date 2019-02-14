@@ -1,0 +1,7 @@
+{
+    "port": 8312,
+    "logDebug": true,
+    "logInfo": true,
+    "logWarn": true,
+    "logError": true
+}

@@ -1,0 +1,20 @@
+{
+  "name": "seng513-a3",
+  "version": "1.0.0",
+  "description": "Assignment 3 for SENG513, a chat application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bufutda/SENG513.git"
+  },
+  "author": "Mitchell Sawatzky",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/bufutda/SENG513/issues"
+  },
+  "homepage": "https://github.com/bufutda/SENG513#readme"
+}

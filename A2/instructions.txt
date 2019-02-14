@@ -1,0 +1,8 @@
+SENG513 Assignment 2
+Mitchell Sawatzky
+10146721
+February 15, 2019
+
+Live URL: https://sa.watz.ky/A2/
+Browsers tested: Chrome, Firefox
+Deploy instructions: Place the entire folder in the document root of a web server and navigate to /A2 from the domain.

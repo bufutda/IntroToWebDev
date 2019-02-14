@@ -14,8 +14,65 @@ html, body {
     overflow: hidden;
     height: 100%;
     width: 100%;
+    padding: 0;
+    margin: 0;
+    background-repeat: repeat;
+}
+
+#calculator {
+    width: 600px;
+    background-color: #eeeeee;
+    margin: auto;
+}
+
+#calculator table {
+    width: 100%;
+    border: 2px solid #747474;
+    border-collapse: separate;
+    border-spacing: 10px;
+    table-layout: fixed;
+}
+
+#calculator table td#expression {
+    border: none;
+    overflow-x: hidden;
+    text-align: right;
+    font-size: 13px;
+    height: 18px;
+    color: #747474;
+    font-family: monospace;
+}
+
+#calculator table td#input {
+    overflow-x: hidden;
+    text-align: right;
+    background-color: #ffffff;
+    border: 1px solid #747474;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 18px;
+}
+
+.calc-button {
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    background-color: #c9dbf8;
+    border-radius: 7px;
+    border: 1px solid #747474;
+    font-family: sans-serif;
+}
+
+.calc-button:hover {
+    background-color: #97bfff;
+    border-color: #545454;
+    cursor: pointer;
 }
 
 @media handheld, only screen and (max-width: 600px) {
     /* calculator is stretched horizontally across entire screen */
+    #calculator {
+        width: 100%;
+        min-width: 137px;
+    }
 }

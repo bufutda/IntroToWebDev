@@ -5,7 +5,12 @@
  */
 
 const log = require(`${__rootname}/log.js`);
+const uuid = require('uuid/v4');
+const randomName = require('random-name');
+
 let clients = {};
+let nicknames = {};
+let history = [];
 
 /**
  * Chat client class
@@ -19,7 +24,8 @@ function Client(socket, id) {
     let self = this;
 
     self.socket = socket;
-    self.id = id;
+    self.id = id; // connectionID
+    self.userID = null;
 
     /**
      * Send a message to the client
@@ -28,6 +34,20 @@ function Client(socket, id) {
         let outgoing = JSON.stringify(message);
         log.debug(`[WS] [${self.id}] <<`, message);
         self.socket.send(outgoing);
+    };
+
+    /**
+     * Send a message to all clients except this one
+     * @param {*} message - the message to send
+     * @param {bool} [sendToSelf=false] - true to send to this client as well
+     */
+    self.broadcast = function(message, sendToSelf=false) {
+        for (let id in clients) {
+            if (!sendToSelf && id === self.id) {
+                continue;
+            }
+            clients[id].send(message);
+        }
     };
 
     /**
@@ -40,10 +60,93 @@ function Client(socket, id) {
         }
         switch (message[0]) {
             case 'ClientHello':
+                // ClientHello [userID]: initiate handshake
+                // if the id is provided, check if it exists and assign the
+                // previous id. Otherwise, create a new id.
+                if (message[1] && nicknames.hasOwnProperty(message[1])) {
+                    self.userID = message[1];
+                } else {
+                    self.userID = uuid();
+                    nicknames[self.userID] = {
+                        name: getUniqueName(),
+                        color: '000000'
+                    };
+                }
+
                 self.send([
                     'ServerHello',
-                    self.id
+                    self.id,
+                    self.userID
                 ]);
+
+                self.broadcast([
+                    'Join',
+                    self.userID,
+                    nicknames[self.userID]
+                ]);
+                break;
+            case 'History':
+                // History
+                self.send(['History', history]);
+                break;
+            case 'Message':
+                // Message <message>
+                if (message[1] && message[1].length) {
+                    let now = Date.now()
+                    self.broadcast([
+                        'Message',
+                        self.userID,
+                        now,
+                        message[1]
+                    ], true);
+                    history.push({
+                        uid: self.userID,
+                        time: now,
+                        content: message[1]
+                    });
+                }
+                break;
+            case 'NickList':
+                // NickList: get all nicknames
+                let response = {};
+                for (let clientID in clients) {
+                    response[clients[clientID].userID] = nicknames[clients[clientID].userID];
+                };
+                self.send([
+                    'NickList',
+                    response
+                ]);
+                break;
+            case 'SetNick':
+                // SetNick <nick>
+                let unique = true;
+                for (let uid in nicknames) {
+                    if (message[1] === nicknames[uid].name) {
+                        unique = false;
+                        break;
+                    }
+                }
+                if (!unique) {
+                    self.send(['ServerMessage', 'That nickname has been taken.']);
+                } else {
+                    nicknames[self.userID].name = message[1];
+                    self.broadcast(['Nick', self.userID, message[1]], true);
+                    self.send(['ServerMessage', 'Your nickname has been changed.']);
+                }
+                break;
+            case 'NickColor':
+                // NickColor <color>: set own nick color
+                if (/^[0-9a-fA-F]{6}$/.test(message[1])) {
+                    nicknames[self.userID].color = message[1].toUpperCase();
+                    self.broadcast([
+                        'NickColor',
+                        self.userID,
+                        message[1].toUpperCase()
+                    ], true);
+                    self.send(['ServerMessage', 'Your color has been changed']);
+                } else {
+                    self.send(['ServerMessage', 'The colour you provided is not valid']);
+                }
                 break;
             default:
                 log.warn(`Unknown OPCODE: ${message[0]}`);
@@ -88,11 +191,34 @@ function createClient(socket, id) {
  */
 function destroyClient(id) {
     if (clients.hasOwnProperty(id)) {
+        clients[id].broadcast([
+            'Part',
+            clients[id].userID
+        ]);
         clients[id].socket.close();
         delete clients[id];
     } else {
         log.warn(`[WS] Client ${id} does not exist to be destroyed`);
     }
+}
+
+/**
+ * Generate a unique random name
+ * @function
+ * @private
+ * @returns {string} the newly-generated name
+ */
+function getUniqueName() {
+    let names = [];
+    for (let uid in nicknames) {
+        names.push(nicknames[uid].name);
+    }
+
+    let name;
+    do {
+        name = randomName.first();
+    } while (names.indexOf(name) !== -1);
+    return name;
 }
 
 /**

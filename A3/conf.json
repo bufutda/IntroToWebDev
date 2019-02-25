@@ -3,5 +3,9 @@
     "logDebug": true,
     "logInfo": true,
     "logWarn": true,
-    "logError": true
+    "logError": true,
+    "ejs": {
+        "ws-domain": "localhost",
+        "ws-port": 8312
+    }
 }

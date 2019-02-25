@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/bufutda/SENG513/issues"
   },
-  "homepage": "https://github.com/bufutda/SENG513#readme"
+  "homepage": "https://github.com/bufutda/SENG513#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "uuid": "^3.3.2",
+    "ws": "^6.1.3"
+  }
 }

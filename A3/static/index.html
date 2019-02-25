@@ -19,7 +19,9 @@
         <script type="text/javascript" src="/index.js"></script>
     </head>
 
-    <body>
+    <body onload="javascript:a3.init();">
+        <input type="button" value="connect" onclick="javascript:a3.connect();">
+        <input type="button" value="close" onclick="javascript:a3.disconnect();">
         <div id="rooms"></div>
     </body>
 </html>

@@ -10,6 +10,10 @@
 global.__rootname = __dirname;
 
 const server = require(`${__rootname}/server.js`);
+const websocket = require(`${__rootname}/websocket.js`);
 
-// start the server
-server.init();
+// start the http server
+let httpServer = server.init();
+
+// start the websocket server
+websocket.init(httpServer);

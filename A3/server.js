@@ -1,6 +1,6 @@
 /**
  * @file server.js
- * @overview Server logic
+ * @overview HTTP Server logic
  * @author Mitchell Sawatzky
  */
 
@@ -8,6 +8,7 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+const ejs = require('ejs');
 const conf = require(`${__rootname}/conf.json`);
 const log = require(`${__rootname}/log.js`);
 
@@ -17,13 +18,15 @@ let httpServer;
  * Initialize the server and start listening for requests
  * @function init
  * @memberof server
+ * @returns {http.Server} the server that was created
  */
 function init() {
-    log.debug('Creating server');
+    log.debug('Creating http server');
     httpServer = http.createServer(handleRequest);
 
-    log.info('Listening on port', conf.port);
     httpServer.listen(conf.port);
+    log.info('HTTP Server is listening on port', conf.port);
+    return httpServer;
 }
 
 /**
@@ -34,7 +37,7 @@ function init() {
  * @param {http.ServerResponse} response - the response object that will be used for this request
  */
 function handleRequest(request, response) {
-    log.info(`${request.method} Request: ${request.url}`);
+    log.info(`[HTTP] ${request.method} Request: ${request.url}`);
 
     // we only support GET requests and websockets
     if (request.method !== 'GET') {
@@ -49,7 +52,7 @@ function handleRequest(request, response) {
 
     // quick sanity check that the path doesn't contain '..'
     if (pathname.indexOf('..') !== -1) {
-        log.debug('Killing request with 404 (has ..)');
+        log.debug('[HTTP] Killing request with 404 (has ..)');
         response.writeHead(404); // not found
         response.end();
         return;
@@ -60,12 +63,12 @@ function handleRequest(request, response) {
     }
 
     let filepath = path.resolve(`${__rootname}/static/${pathname}`);
-    log.debug('Interpreting path as', filepath);
+    log.debug('[HTTP] Interpreting path as', filepath);
 
     fs.stat(filepath, (err, stat) => {
         if (err && err.code === 'ENOENT') {
             // file doesn't exist
-            log.debug('Killing request with 404 (file not found)');
+            log.debug('[HTTP] Killing request with 404 (file not found)');
             response.writeHead(404);
             response.end();
             return;
@@ -93,13 +96,12 @@ function handleRequest(request, response) {
                 break;
         }
         if (typeof contentType === 'undefined') {
-            log.debug('File type unsupported!', path.extname(filepath));
+            log.debug('[HTTP] File type unsupported!', path.extname(filepath));
             // we just won't write a content-type header
         } else {
             response.setHeader('Content-Type', contentType);
         }
 
-        // finally, send over the file
         fs.readFile(filepath, (err, file) => {
             if (err) {
                 log.err(err.message);
@@ -108,6 +110,7 @@ function handleRequest(request, response) {
                 return;
             }
 
+            // finally, send over the file
             response.writeHead(200);
             response.end(file);
             return;

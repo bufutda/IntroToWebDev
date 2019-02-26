@@ -1,11 +1,7 @@
 {
     "port": 8312,
-    "logDebug": true,
+    "logDebug": false,
     "logInfo": true,
     "logWarn": true,
-    "logError": true,
-    "ejs": {
-        "ws-domain": "localhost",
-        "ws-port": 8312
-    }
+    "logError": true
 }

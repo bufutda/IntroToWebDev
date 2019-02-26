@@ -27,12 +27,8 @@ body {
     margin-left: 10px;
 }
 
-#titles {
-    height: 0; /* text height */
-}
-
-#textCell {
-    height: 0; /* text height */
+#titles, #textCell {
+    height: 1px; /* text height */
 }
 
 #textCell input {
@@ -56,6 +52,7 @@ body {
 
 #chatCell {
     font-family: monospace;
+    height: calc(100% - 100px);
 }
 
 #chatW, #roomW {

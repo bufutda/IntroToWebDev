@@ -222,7 +222,11 @@ window.a3 = window.a3 || {};
                 for (let msg of message[1]) {
                     self.displayMessage(msg);
                 }
-                self.displayServerMessage('Welcome to the room.');
+                document.querySelector('#chatCell').style.height = '100%';
+                setTimeout(() => {
+                    document.querySelector('#chatCell').style.height = '';
+                    self.displayServerMessage('Welcome to the room.');
+                }, 30);
                 break;
             case 'NickList':
                 // NickList {userID: nick, ...}

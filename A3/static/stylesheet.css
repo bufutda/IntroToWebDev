@@ -1,0 +1,94 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #efefef;
+    font-family: sans-serif;
+}
+
+#application {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border-spacing: 10px 2px;
+}
+
+#application tr td:nth-child(2) {
+    width: 250px;
+    margin-left: 10px;
+}
+
+#titles {
+    height: 0; /* text height */
+}
+
+#textCell {
+    height: 0; /* text height */
+}
+
+#textCell input {
+    background-color: #eeeeee;
+    width: calc(100% - 10px);
+    border: 1px solid #919191;
+    caret-color: #fd0900;
+    padding: 5px;
+    transform: translateX(-1px);
+    font-size: 20px;
+}
+
+#textCell input:focus {
+    outline: none;
+}
+
+#chatCell, #roomCell {
+    background-color: #666666;
+    color: #d8d8d8;
+}
+
+#chatCell {
+    font-family: monospace;
+}
+
+#chatW, #roomW {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#chat, #room {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+.connectedUser, .message {
+    display: block;
+    padding: 5px;
+}
+
+.serverMessage {
+    font-style: italic;
+    font-size: 13px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 550px) {
+    td:nth-child(2) {
+        display: none;
+    }
+}

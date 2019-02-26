@@ -20,8 +20,34 @@
     </head>
 
     <body onload="javascript:a3.init();">
-        <input type="button" value="connect" onclick="javascript:a3.connect();">
-        <input type="button" value="close" onclick="javascript:a3.disconnect();">
-        <div id="rooms"></div>
+        <table id="application">
+            <thead>
+                <tr id="titles">
+                    <td>You are <span id="self-user"></span></td>
+                    <td>Online Users:</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="chatCell">
+                        <div id="chatW">
+                            <div id="chat">
+                            </div>
+                        </div>
+                    </td>
+                    <td id="roomCell">
+                        <div id="roomW">
+                            <div id="room">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="textCell">
+                    <td id="textbox" colspan="2">
+                        <input type="text" id="chatinput">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>

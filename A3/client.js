@@ -92,7 +92,7 @@ function Client(socket, id) {
             case 'Message':
                 // Message <message>
                 if (message[1] && message[1].length) {
-                    let now = Date.now()
+                    let now = Date.now();
                     self.broadcast([
                         'Message',
                         self.userID,
